@@ -1,0 +1,27 @@
+Python GUI to create image with regions/ROIS that we found mentioned in papers on some specific theme
+
+KeyWords: neuroimaging, brain analysis, reviewing, AFNI, uber_ script
+
+Useful when writing review paper on some subject - like: GM and WM structural brain alterations in congenitally deaf
+
+Will create some video to show how to use it: ...link
+
+Prerequisites:
+
+- Linux or Mac operating system, because we use shell scripts and AFNI command line tools
+
+- AFNI installed (https://afni.nimh.nih.gov/)
+
+
+
+There are quite some options for improvement, that I might address in this file.
+
+- It would be great if ROI volumes would be created with some flooding alghorithm or with iterative loop while masking out just WM or GM and checking actual volume...
+
+- 
+
+
+
+created by Andrej Vovk
+
+
