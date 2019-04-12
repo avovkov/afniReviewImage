@@ -4,24 +4,11 @@
 set infile = $1
 set fname = `echo ${infile} | sed "s/\.txt//"`
 
-##################################################################################
-# change coordinates to MNI
 
-# whereami -calc_chain TT_N27 MNI -xform_xyz_quiet
-
-
-##################################################################################
-# Before you run this command you'll most likely need the following setup in your 
-# .afnirc
-
-## AFNI_ANALYZE_ORIENT = LPI
-## AFNI_ANALYZE_ORIGINATOR = YES
-
-# then run:
 if ( ! -f MNI152_T1_1mm_LPI+tlrc.BRIK ) then
     set afnidir = `which afni | xargs dirname`
     3dcopy ${afnidir}/MNI152_2009_template.nii.gz ./MNI152_T1_1mm_LPI
-    3drefit -orient LPI -view +tlrc MNI152_T1_1mm_LPI+orig
+    #3drefit -orient LPI -view +tlrc MNI152_T1_1mm_LPI+orig
 endif
 
 3dcalc -overwrite  -a MNI152_T1_1mm_LPI+tlrc -expr "a*0" -prefix ${fname}_DTI_B1
@@ -54,8 +41,8 @@ foreach j ("`cat ${infile}`")
 	echo $author
 	echo $Z
 
-        set X=`ccalc -form "%3d" -eval "$X*(-1)"`
-        set Y=`ccalc -form "%3d" -eval "$Y*(-1)"`
+   set X=`ccalc -form "%3d" -eval "$X*(-1)"`
+   set Y=`ccalc -form "%3d" -eval "$Y*(-1)"`
 	
 	## insert TLRC to MNI conversion
 	set coord=`echo $i | awk -F "_" '{print $5}'`
