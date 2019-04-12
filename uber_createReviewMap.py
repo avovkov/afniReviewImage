@@ -29,6 +29,8 @@ class MyWindow(QtGui.QMainWindow):
         self.pushButton_ShowRegions_2.clicked.connect(self.ShowRegions_GM)
         self.pushButton_Combine_2.clicked.connect(self.CombineMaps_GM)
         self.pushButton_Show_2.clicked.connect(self.ShowCombined_GM)
+        # showing example of coordinate
+        self.textEditCoordinates.setPlainText("-49 15 4 600 <- x y z volume ; delete this example")
         self.show()
 
     def AddRois(self):
