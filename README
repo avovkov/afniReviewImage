@@ -12,6 +12,7 @@ Prerequisites:
 
 - AFNI installed (https://afni.nimh.nih.gov/)
 
+- and we need qt4 module fo python (sudo apt-get install python-qt4)
 
 
 There are quite some options for improvement, that I might address in this file.
