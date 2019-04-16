@@ -103,8 +103,7 @@ foreach i ("`cat ${infile}`")
 		if (${atlas} == "JHU-WhiteMatter-labels") then
 			echo "WE HAVE JHU white matter atlas"
 			set Y=`echo $X | awk -F "_" '{print $1}'`
-			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm+tlrc"
-			\ -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
+			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
 		endif
 	endif
 
