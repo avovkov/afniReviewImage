@@ -52,7 +52,7 @@ class MyWindow(QtGui.QMainWindow):
 
     def CreateROImap(self):
         # open file and write in ... self.textBrowserROIs.toPlainText
-        fname = "WM_ROIs_" + self.lineEdit_MapName.displayText() + ".txt"
+        fname = "WM_ROIs_" + self.lineEdit_MapName.displayText() + ".csv"
         print fname
         if os.path.isfile(fname):
             print("File exists")
@@ -106,7 +106,7 @@ class MyWindow(QtGui.QMainWindow):
 
     def CreateRegionsMap(self):
         # open file and write in ... self.textBrowserROIs.toPlainText
-        fname = "WM_Regions_" + self.lineEdit_MapName.displayText() + ".txt"
+        fname = "WM_Regions_" + self.lineEdit_MapName.displayText() + ".csv"
         print fname
         if os.path.isfile(fname):
             print("File exists")
@@ -154,7 +154,7 @@ class MyWindow(QtGui.QMainWindow):
 
     def CreateROImap_GM(self):
         # open file and write in ... self.textBrowserROIs.toPlainText
-        fname = "GM_ROIs_" + self.lineEdit_MapName_2.displayText() + ".txt"
+        fname = "GM_ROIs_" + self.lineEdit_MapName_2.displayText() + ".csv"
         print fname
         if os.path.isfile(fname):
             print("File exists")
@@ -208,7 +208,7 @@ class MyWindow(QtGui.QMainWindow):
 
     def CreateRegionsMap_GM(self):
         # open file and write in ... self.textBrowserROIs.toPlainText
-        fname = "GM_Regions_" + self.lineEdit_MapName_2.displayText() + ".txt"
+        fname = "GM_Regions_" + self.lineEdit_MapName_2.displayText() + ".csv"
         print fname
         if os.path.isfile(fname):
             print("File exists")

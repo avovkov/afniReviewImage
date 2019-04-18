@@ -2,7 +2,7 @@
 
 
 set infile = $1
-set fname = `echo ${infile} | sed "s/\.txt//"`
+set fname = `echo ${infile} | sed "s/\.csv//"`
 
 
 if ( ! -f MNI152_T1_1mm_LPI+tlrc.BRIK ) then

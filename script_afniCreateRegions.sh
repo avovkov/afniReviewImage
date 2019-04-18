@@ -2,7 +2,7 @@
 
 
 set infile = $1
-set fname = `echo ${infile} | sed "s/\.txt//"`
+set fname = `echo ${infile} | sed "s/\.csv//"`
 
 ##################################################################################
 # change coordinates to MNI

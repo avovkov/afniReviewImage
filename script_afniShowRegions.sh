@@ -8,7 +8,7 @@ afni -layout .afni_ROIs_Layout -npb 4 -niml -yesplugouts
 sleep 4
 
 plugout_drive -npb 4 \
-               -com "SWITCH_UNDERLAY MNI152_T1_1mm_LPI+tlrc"  \
+               -com "SWITCH_UNDERLAY TT_N27+tlrc"  \
                -com "SWITCH_OVERLAY ${mask}_B2+tlrc" \
                -com "SAVE_JPEG axialimage ${mask}" \
                -quit
