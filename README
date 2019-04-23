@@ -19,6 +19,8 @@ There are quite some options for improvement, that I might address in this file.
 
 - It would be great if ROI volumes would be created with some flooding alghorithm or with iterative loop while masking out just WM or GM and checking actual volume...
 
+-- Rick sugested to add options to 3dmask_tool
+
 - 
 
 
