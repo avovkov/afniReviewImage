@@ -23,6 +23,7 @@ There are quite some options for improvement, that I might address in this file.
 
 - Colorscale can be set automatically 
 
+- beside grafical output produce numerical count of voxels by map regions
 
 
 initiated by Andrej Vovk ;)
