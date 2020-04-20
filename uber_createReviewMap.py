@@ -63,7 +63,7 @@ class MyWindow(QtGui.QMainWindow):
             with open(fname, "w") as f:
                 f.write(self.textEditROIs.toPlainText())
             self.textEditROIs.setPlainText("")
-            subprocess.call(['./script_afniCreateROIs.sh', fname])
+            subprocess.call(['./script_afniCreateROIs.sh', fname, "WM"])
 
     def ShowROIs(self):
         MapName = "WM_ROIs_" + self.lineEdit_MapName.displayText()
@@ -165,7 +165,7 @@ class MyWindow(QtGui.QMainWindow):
             with open(fname, "w") as f:
                 f.write(self.textEditROIs_2.toPlainText())
             self.textEditROIs_2.setPlainText("")
-            subprocess.call(['./script_afniCreateROIs.sh', fname])
+            subprocess.call(['./script_afniCreateROIs.sh', fname, "GM"])
 
     def ShowROIs_GM(self):
         MapName = "GM_ROIs_" + self.lineEdit_MapName_2.displayText()

@@ -3,7 +3,9 @@
 
 set infile = $1
 set fname = `echo ${infile} | sed "s/\.csv//"`
+set structure = $2
 
+# 2020apr: with structure we define from where is script called: from WM or GM window
 
 if ( ! -f MNI152_T1_1mm_LPI+tlrc.BRIK ) then
     set afnidir = `which afni | xargs dirname`
@@ -28,6 +30,12 @@ endif
 echo ${infile}
 
 ## space is not good delimiter
+
+# create WM GM mask (could use some segmented volume... TO FIX)
+## 2020marc20 threshold za belino naj bo 910, sivino med 430 in 910 Create outside the loop
+3dcalc -a MNI152_T1_1mm_LPI+tlrc -expr "ispositive(a-910)" -prefix MNI152_WMmask
+3dcalc -a MNI152_T1_1mm_LPI+tlrc -b MNI152_WMmask+tlrc -expr "ispositive(a-430)-b" -prefix MNI152_GMmask
+
 
 foreach j ("`cat ${infile}`")
 	set i=`echo ${j} | sed "s/\ /_/g"`
@@ -55,12 +63,16 @@ foreach j ("`cat ${infile}`")
 	endif
 	# check if this is true?!
 
-	set r=`ccalc -form "%4.1f" -eval "1.5*cbrt(3*$V/(4*pi))"`
+	#set r=`ccalc -form "%4.1f" -eval "1.5*cbrt(3*$V/(4*pi))"`
+	set r=`ccalc -form "%4.3f" -eval "cbrt(3*$V/(4*pi))"`
 	# here we could iterativelly check if volume is large enough after masking WM
-	# 1. check what is the focus of the analysis - GM or WM
+	# 1. check what is the focus of the analysis - GM or WM ... 
+	## 2020apr OK change also GUI...
 	# 1a second argument to script
 	# 1b. !! add new radiobutton to GUI
-	# 2. in this script create GM/WM mask (with threshold like 150 ... prever koliko si imel!)
+	# 2. in this script create GM/WM mask (with threshold like 150 ... prever koliko si imel!) 
+	## 2020marc20 threshold za belino naj bo 910, sivino med 430 in 910 Create outside the loop
+
 
 	echo "x: " $X "y: " $Y "z: " $Z "r: " $r
 
@@ -68,6 +80,55 @@ foreach j ("`cat ${infile}`")
             -expr "step(${r}*${r}-(x-${X})*(x-${X})-(y-${Y})*(y-${Y})-(z-${Z})*(z-${Z}))" \
             -prefix ball_${fname}_${i}_MNI
 
+        3dcopy ball_${fname}_${i}_MNI+tlrc 1st_ball_${fname}_${i}_MNI+tlrc
+	set r1 = $r
+######################################################################
+# crazy loop 2020 april20
+	#  check what structure / window has started that script
+	if (${structure} == "WM") then
+		set mask = "MNI152_WMmask+tlrc"
+	else
+		set mask = "MNI152_GMmask+tlrc"
+	endif
+
+	set nloops = 0
+	set volDiff = 20
+	while ( ( ${volDiff} >= 10 ) && ( ${nloops} <= 20 ) )
+		# HM; that could mean that we prefer larger volumes 
+		
+		# mask ball_xx file with structure mask
+		3dcalc -overwrite -a ball_${fname}_${i}_MNI+tlrc -b ${mask} -expr "a*b" -prefix ballMasked_${fname}_${i}_MNI
+		# check number of voxels in ballMasked_ file
+		# and compare number with volume
+	
+		set volAfter = `3dROIstats -nzvoxels -quiet -mask ${mask} ballMasked_${fname}_${i}_MNI+tlrc | awk -F "\t" '{print $3}'`
+		echo "\n"
+		# compare 
+		set volDiff = `ccalc -form int -eval "${V}-${volAfter}"`
+		echo "Expected Volume: " $V " \t Last computed Volume: " ${volAfter} " \t Volume difference: " ${volDiff} "\n"
+		set rDiff = `ccalc -form "%4.3f" -eval "cbrt(3*${volDiff}/(4*pi)+${r}*${r}*${r})"`
+		echo "original r: " ${r1} " \t r before: " ${r} " \t r corrected: " ${rDiff}
+		echo "\n"
+		rm ballBCK_${fname}_${i}_MNI+tlrc*
+		#3dcopy ball_${fname}_${i}_MNI+tlrc ballBCK_${fname}_${i}_MNI+tlrc
+
+		3dcalc -overwrite -a MNI152_T1_1mm_LPI+tlrc                         \
+            -expr "step(${rDiff}*${rDiff}-(x-${X})*(x-${X})-(y-${Y})*(y-${Y})-(z-${Z})*(z-${Z}))" \
+            -prefix ball_${fname}_${i}_MNI
+
+		set r = ${rDiff}
+		@ nloops ++
+		echo "\n"
+		echo "Number of Correcting r: " ${nloops}
+		echo "\n"
+	end
+
+#	rm ballMasked_${fname}_${i}_MNI+tlrc.*
+
+
+#########################################################################
+
+	
     set metoda=`echo $i | awk -F "_" '{print $6}'`
     echo $metoda
     if (${metoda} == "DTI") then
@@ -90,7 +151,7 @@ foreach j ("`cat ${infile}`")
 		3dcalc  -overwrite -a ${fname}_Manual_B1+tlrc -b ball_${fname}_${i}_MNI+tlrc -expr "a+b" -prefix ${fname}_Manual_B1
 	endif
 
-	rm ball_${fname}_${i}_MNI+tlrc*
+#	rm ball_${fname}_${i}_MNI+tlrc*
 
 
 end
