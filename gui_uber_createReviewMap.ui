@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="WM">
        <attribute name="title">
@@ -153,7 +153,7 @@
             </widget>
            </item>
            <item row="1" column="0" colspan="2">
-            <widget class="QTextBrowser" name="textBrowser_Aregions">
+            <widget class="QTextEdit" name="textBrowser_Aregions">
              <property name="enabled">
               <bool>true</bool>
              </property>
@@ -889,7 +889,7 @@
             </widget>
            </item>
            <item row="1" column="0" colspan="2">
-            <widget class="QTextBrowser" name="textBrowser_Aregions_2">
+            <widget class="QTextEdit" name="textBrowser_Aregions_2">
              <property name="enabled">
               <bool>true</bool>
              </property>
@@ -1036,7 +1036,7 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>
