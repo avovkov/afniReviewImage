@@ -19,10 +19,12 @@ if ( ! -f TT_N27+tlrc.HEAD ) then
     3dcopy ${afnidir}/TT_N27+tlrc ./
 endif
 
-if ( ! -f JHU-WhiteMatter-labels-1mm+tlrc.HEAD ) then
-    set afnidir = `which afni | xargs dirname`
-    3dcopy ${afnidir}/JHU-WhiteMatter-labels-1mm+tlrc ./
-endif
+#if ( ! -f JHU-WhiteMatter-labels-1mm_al+tlrc.HEAD ) then
+#    set afnidir = `which afni | xargs dirname`
+#    3dcopy ${afnidir}/JHU-WhiteMatter-labels-1mm_al+tlrc ./
+#    3dcopy ${afnidir}/MNI152_2009_template.nii.gz ./
+#    align_epi_anat.py -dset1 MNI152_2009_template.nii.gz -dset2 TT_N27+tlrc. -dset1to2 -anat_has_skull no -dset1_strip None -dset2_strip None -child_anat JHU-WhiteMatter-labels-1mm+tlrc.
+#endif
 
 
 
@@ -59,7 +61,7 @@ foreach i ("`cat ${infile}`")
 		if (${atlas} == "JHU-WhiteMatter-labels") then
 			echo "WE HAVE JHU white matter atlas"
 			set Y=`echo $X | awk -F "_" '{print $1}'`
-			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
+			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm_al+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
 		endif
 	endif
 
@@ -78,7 +80,7 @@ foreach i ("`cat ${infile}`")
 		if (${atlas} == "JHU-WhiteMatter-labels") then
 			echo "WE HAVE JHU white matter atlas"
 			set Y=`echo $X | awk -F "_" '{print $1}'`
-			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
+			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm_al+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
 		endif
 	endif
 
@@ -98,7 +100,7 @@ foreach i ("`cat ${infile}`")
 		if (${atlas} == "JHU-WhiteMatter-labels") then
 			echo "WE HAVE JHU white matter atlas"
 			set Y=`echo $X | awk -F "_" '{print $1}'`
-			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
+			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm_al+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
 		endif
 	endif
 
@@ -117,7 +119,7 @@ foreach i ("`cat ${infile}`")
 		if (${atlas} == "JHU-WhiteMatter-labels") then
 			echo "WE HAVE JHU white matter atlas"
 			set Y=`echo $X | awk -F "_" '{print $1}'`
-			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
+			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm_al+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
 		endif
 	endif
 
@@ -136,7 +138,7 @@ foreach i ("`cat ${infile}`")
 		if (${atlas} == "JHU-WhiteMatter-labels") then
 			echo "WE HAVE JHU white matter atlas"
 			set Y=`echo $X | awk -F "_" '{print $1}'`
-			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
+			3dcalc  -overwrite -a ${fname}_${metoda}_B2+tlrc -b "JHU-WhiteMatter-labels-1mm_al+tlrc" -expr "a+iszero(b-$Y)" -prefix ${fname}_${metoda}_B2
 		endif
 	endif
 
