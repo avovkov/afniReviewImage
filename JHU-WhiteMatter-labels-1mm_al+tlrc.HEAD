@@ -1,0 +1,147 @@
+
+type = string-attribute
+name = HISTORY_NOTE
+count = 538
+'[andrej@andrej-HPserv: Thu Nov  9 10:15:43 2017] {AFNI_17.2.16:linux_openmp_64} 3dresample -master TT_N27+tlrc -prefix JHU-WhiteMatter-labels-1mm -input JHU-WhiteMatter-labels-1mm.nii.gz\n[andrej@andrej-double: Tue Apr 21 18:26:05 2020] {AFNI_19.3.13:linux_openmp_64} 3dAllineate -base ./__tt_TT_N27_ts+tlrc -1Dmatrix_apply ./MNI152_T1_1mm_LPI_al_mat.aff12.1D -prefix ./JHU-WhiteMatter-labels-1mm_al -input ./JHU-WhiteMatter-labels-1mm+tlrc -master SOURCE -weight_frac 1.0 -maxrot 6 -maxshf 10 -VERB -warp aff -source_automask+4 -onepass~
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_B2S_000000
+count = 12
+        1.06277     -0.0113983    -0.00437796        0.77198      0.0226782
+        1.11334      -0.117082      -0.581642    -0.00630444      0.0859209
+        1.16603       -3.54724
+
+type  = float-attribute
+name  = ALLINEATE_MATVEC_S2B_000000
+count = 12
+      0.9407657    0.009286936    0.004464694     -0.7050133    -0.01848479
+       0.891109     0.08940756      0.8497264    0.006448574    -0.06561267
+      0.8510468       2.975726
+
+type = string-attribute
+name = ALLINEATE_WARP_TYPE
+count = 15
+'affine_general~
+
+type  = float-attribute
+name  = ALLINEATE_PARAMS_000000
+count = 12
+              0              0              0              0              0
+              0              1              1              1              0
+              0              0
+
+type = string-attribute
+name = TYPESTRING
+count = 15
+'3DIM_HEAD_ANAT~
+
+type = string-attribute
+name = IDCODE_STRING
+count = 27
+'XYZ_hu-Ed39jW9b6Ic4hiNNr_w~
+
+type = string-attribute
+name = IDCODE_DATE
+count = 25
+'Tue Apr 21 18:26:05 2020~
+
+type = integer-attribute
+name = SCENE_DATA
+count = 8
+ 2 11 0 -999 -999
+ -999 -999 -999
+
+type = string-attribute
+name = LABEL_1
+count = 5
+'zyxt~
+
+type = string-attribute
+name = LABEL_2
+count = 5
+'zyxt~
+
+type = string-attribute
+name = DATASET_NAME
+count = 5
+'zyxt~
+
+type = integer-attribute
+name = ORIENT_SPECIFIC
+count = 3
+ 0 3 4
+
+type  = float-attribute
+name  = ORIGIN
+count = 3
+            -80            -80            -65
+
+type  = float-attribute
+name  = DELTA
+count = 3
+              1              1              1
+
+type  = float-attribute
+name  = IJK_TO_DICOM
+count = 12
+              1              0              0            -80              0
+              1              0            -80              0              0
+              1            -65
+
+type  = float-attribute
+name  = IJK_TO_DICOM_REAL
+count = 12
+              1              0              0            -80              0
+              1              0            -80              0              0
+              1            -65
+
+type  = float-attribute
+name  = BRICK_STATS
+count = 2
+              0             48
+
+type = integer-attribute
+name = DATASET_RANK
+count = 8
+ 3 1 0 0 0
+ 0 0 0
+
+type = integer-attribute
+name = DATASET_DIMENSIONS
+count = 5
+ 161 191 151 0 0
+
+type = integer-attribute
+name = BRICK_TYPES
+count = 1
+ 0
+
+type  = float-attribute
+name  = BRICK_FLOAT_FACS
+count = 1
+              0
+
+type = string-attribute
+name = BRICK_LABS
+count = 3
+'#0~
+
+type = string-attribute
+name = BRICK_KEYWORDS
+count = 1
+'~
+
+type = string-attribute
+name = TEMPLATE_SPACE
+count = 5
+'TLRC~
+
+type = integer-attribute
+name = INT_CMAP
+count = 1
+ 0
+
+type = string-attribute
+name = BYTEORDER_STRING
+count = 10
+'LSB_FIRST~

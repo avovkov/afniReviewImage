@@ -5,12 +5,7 @@ set infile = $1
 set fname = `echo ${infile} | sed "s/\.csv//"`
 
 ##################################################################################
-# change coordinates to MNI
 
-# whereami -calc_chain TT_N27 MNI -xform_xyz_quiet
-
-
-##################################################################################
 # Before you run this command you'll most likely need the following setup in your 
 # .afnirc
 

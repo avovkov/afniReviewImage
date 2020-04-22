@@ -7,17 +7,18 @@ set structure = $2
 
 # 2020apr: with structure we define from where is script called: from WM or GM window
 
-if ( ! -f MNI152_T1_1mm_LPI+tlrc.BRIK ) then
+if ( ! -f TT_N27+tlrc.BRIK ) then
     set afnidir = `which afni | xargs dirname`
-    3dcopy ${afnidir}/MNI152_2009_template.nii.gz ./MNI152_T1_1mm_LPI
-    #3drefit -orient LPI -view +tlrc MNI152_T1_1mm_LPI+orig
+    3dcopy ${afnidir}/TT_N27+tlrc.* ./
 endif
 
-3dcalc -overwrite  -a MNI152_T1_1mm_LPI+tlrc -expr "a*0" -prefix ${fname}_DTI_B1
-3dcalc -overwrite  -a MNI152_T1_1mm_LPI+tlrc -expr "a*0" -prefix ${fname}_TBM_B1
-3dcalc -overwrite  -a MNI152_T1_1mm_LPI+tlrc -expr "a*0" -prefix ${fname}_VBM_B1
-3dcalc -overwrite  -a MNI152_T1_1mm_LPI+tlrc -expr "a*0" -prefix ${fname}_Freesurfer_B1
-3dcalc -overwrite  -a MNI152_T1_1mm_LPI+tlrc -expr "a*0" -prefix ${fname}_Manual_B1
+
+
+3dcalc -overwrite  -a TT_N27+tlrc -expr "a*0" -prefix ${fname}_DTI_B1
+3dcalc -overwrite  -a TT_N27+tlrc -expr "a*0" -prefix ${fname}_TBM_B1
+3dcalc -overwrite  -a TT_N27+tlrc -expr "a*0" -prefix ${fname}_VBM_B1
+3dcalc -overwrite  -a TT_N27+tlrc -expr "a*0" -prefix ${fname}_Freesurfer_B1
+3dcalc -overwrite  -a TT_N27+tlrc -expr "a*0" -prefix ${fname}_Manual_B1
 
 
 # If you use RAI, both x and y will be negated, that is, an input of [30 -4 10] 
@@ -33,8 +34,8 @@ echo ${infile}
 
 # create WM GM mask (could use some segmented volume... TO FIX)
 ## 2020marc20 threshold za belino naj bo 910, sivino med 430 in 910 Create outside the loop
-3dcalc -a MNI152_T1_1mm_LPI+tlrc -expr "ispositive(a-910)" -prefix MNI152_WMmask
-3dcalc -a MNI152_T1_1mm_LPI+tlrc -b MNI152_WMmask+tlrc -expr "ispositive(a-430)-b" -prefix MNI152_GMmask
+3dcalc -a TT_N27+tlrc -expr "ispositive(a-150)" -prefix TT_N27_WMmask
+3dcalc -a TT_N27+tlrc -b TT_N27_WMmask+tlrc -expr "ispositive(a-50)-b" -prefix TT_N27_GMmask
 
 
 foreach j ("`cat ${infile}`")
@@ -52,11 +53,11 @@ foreach j ("`cat ${infile}`")
    set X=`ccalc -form "%3d" -eval "$X*(-1)"`
    set Y=`ccalc -form "%3d" -eval "$Y*(-1)"`
 	
-	## insert TLRC to MNI conversion
+	## insert MNI to TLRC conversion
 	set coord=`echo $i | awk -F "_" '{print $5}'`
 
-	if (${coord} == "TLRC") then
-		set xyz=`whereami -calc_chain TT_N27 MNI -xform_xyz_quiet $X $Y $Z`
+	if (${coord} == "MNI") then
+		set xyz=`whereami -calc_chain MNI TT_N27 -xform_xyz_quiet $X $Y $Z`
 		set X=`echo ${xyz} | awk -F "[ ]" '{print $1}'`
 		set Y=`echo ${xyz} | awk -F "[ ]" '{print $2}'`
 		set Z=`echo ${xyz} | awk -F "[ ]" '{print $3}'`
@@ -76,19 +77,19 @@ foreach j ("`cat ${infile}`")
 
 	echo "x: " $X "y: " $Y "z: " $Z "r: " $r
 
-	3dcalc -overwrite -a MNI152_T1_1mm_LPI+tlrc                         \
+	3dcalc -overwrite -a TT_N27+tlrc                         \
             -expr "step(${r}*${r}-(x-${X})*(x-${X})-(y-${Y})*(y-${Y})-(z-${Z})*(z-${Z}))" \
-            -prefix ball_${fname}_${i}_MNI
+            -prefix ball_${fname}_${i}_TT
 
-        3dcopy ball_${fname}_${i}_MNI+tlrc 1st_ball_${fname}_${i}_MNI+tlrc
+        3dcopy ball_${fname}_${i}_TT+tlrc 1st_ball_${fname}_${i}_TT+tlrc
 	set r1 = $r
 ######################################################################
 # crazy loop 2020 april20
 	#  check what structure / window has started that script
 	if (${structure} == "WM") then
-		set mask = "MNI152_WMmask+tlrc"
+		set mask = "TT_N27_WMmask+tlrc"
 	else
-		set mask = "MNI152_GMmask+tlrc"
+		set mask = "TT_N27_GMmask+tlrc"
 	endif
 
 	set nloops = 0
@@ -97,11 +98,11 @@ foreach j ("`cat ${infile}`")
 		# HM; that could mean that we prefer larger volumes 
 		
 		# mask ball_xx file with structure mask
-		3dcalc -overwrite -a ball_${fname}_${i}_MNI+tlrc -b ${mask} -expr "a*b" -prefix ballMasked_${fname}_${i}_MNI
+		3dcalc -overwrite -a ball_${fname}_${i}_TT+tlrc -b ${mask} -expr "a*b" -prefix ballMasked_${fname}_${i}_TT
 		# check number of voxels in ballMasked_ file
 		# and compare number with volume
 	
-		set volAfter = `3dROIstats -nzvoxels -quiet -mask ${mask} ballMasked_${fname}_${i}_MNI+tlrc | awk -F "\t" '{print $3}'`
+		set volAfter = `3dROIstats -nzvoxels -quiet -mask ${mask} ballMasked_${fname}_${i}_TT+tlrc | awk -F "\t" '{print $3}'`
 		echo "\n"
 		# compare 
 		set volDiff = `ccalc -form int -eval "${V}-${volAfter}"`
@@ -109,12 +110,12 @@ foreach j ("`cat ${infile}`")
 		set rDiff = `ccalc -form "%4.3f" -eval "cbrt(3*${volDiff}/(4*pi)+${r}*${r}*${r})"`
 		echo "original r: " ${r1} " \t r before: " ${r} " \t r corrected: " ${rDiff}
 		echo "\n"
-		rm ballBCK_${fname}_${i}_MNI+tlrc*
-		#3dcopy ball_${fname}_${i}_MNI+tlrc ballBCK_${fname}_${i}_MNI+tlrc
+		rm ballBCK_${fname}_${i}_TT+tlrc*
+		#3dcopy ball_${fname}_${i}_TT+tlrc ballBCK_${fname}_${i}_TT+tlrc
 
-		3dcalc -overwrite -a MNI152_T1_1mm_LPI+tlrc                         \
+		3dcalc -overwrite -a TT_N27+tlrc                         \
             -expr "step(${rDiff}*${rDiff}-(x-${X})*(x-${X})-(y-${Y})*(y-${Y})-(z-${Z})*(z-${Z}))" \
-            -prefix ball_${fname}_${i}_MNI
+            -prefix ball_${fname}_${i}_TT
 
 		set r = ${rDiff}
 		@ nloops ++
@@ -123,7 +124,7 @@ foreach j ("`cat ${infile}`")
 		echo "\n"
 	end
 
-#	rm ballMasked_${fname}_${i}_MNI+tlrc.*
+#	rm ballMasked_${fname}_${i}_TT+tlrc.*
 
 
 #########################################################################
@@ -132,26 +133,26 @@ foreach j ("`cat ${infile}`")
     set metoda=`echo $i | awk -F "_" '{print $6}'`
     echo $metoda
     if (${metoda} == "DTI") then
-		3dcalc  -overwrite -a ${fname}_DTI_B1+tlrc -b ball_${fname}_${i}_MNI+tlrc -expr "a+b" -prefix ${fname}_DTI_B1
+		3dcalc  -overwrite -a ${fname}_DTI_B1+tlrc -b ball_${fname}_${i}_TT+tlrc -expr "a+b" -prefix ${fname}_DTI_B1
 	endif
 
 	if (${metoda} == "TBM") then
-		3dcalc  -overwrite -a ${fname}_TBM_B1+tlrc -b ball_${fname}_${i}_MNI+tlrc -expr "a+b" -prefix ${fname}_TBM_B1
+		3dcalc  -overwrite -a ${fname}_TBM_B1+tlrc -b ball_${fname}_${i}_TT+tlrc -expr "a+b" -prefix ${fname}_TBM_B1
 	endif
 
 	if (${metoda} == "VBM") then
-		3dcalc  -overwrite -a ${fname}_VBM_B1+tlrc -b ball_${fname}_${i}_MNI+tlrc -expr "a+b" -prefix ${fname}_VBM_B1
+		3dcalc  -overwrite -a ${fname}_VBM_B1+tlrc -b ball_${fname}_${i}_TT+tlrc -expr "a+b" -prefix ${fname}_VBM_B1
 	endif
 
 	if (${metoda} == "Freesurfer") then
-		3dcalc  -overwrite -a ${fname}_Freesurfer_B1+tlrc -b ball_${fname}_${i}_MNI+tlrc -expr "a+b" -prefix ${fname}_Freesurfer_B1
+		3dcalc  -overwrite -a ${fname}_Freesurfer_B1+tlrc -b ball_${fname}_${i}_TT+tlrc -expr "a+b" -prefix ${fname}_Freesurfer_B1
 	endif
 
 	if (${metoda} == "Manual") then
-		3dcalc  -overwrite -a ${fname}_Manual_B1+tlrc -b ball_${fname}_${i}_MNI+tlrc -expr "a+b" -prefix ${fname}_Manual_B1
+		3dcalc  -overwrite -a ${fname}_Manual_B1+tlrc -b ball_${fname}_${i}_TT+tlrc -expr "a+b" -prefix ${fname}_Manual_B1
 	endif
 
-#	rm ball_${fname}_${i}_MNI+tlrc*
+#	rm ball_${fname}_${i}_TT+tlrc*
 
 
 end
