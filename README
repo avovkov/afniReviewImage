@@ -29,6 +29,8 @@ There are quite some options for improvement, that I might address in this file.
 
 -- od istega avtorja se ne smejo podvajat!
 
+-- če delam s kroglami in iterativno večam, bi moral kontrolirat še, da ne preskoči krogla na drug girus (use clustering)
+
 
 initiated by Andrej Vovk ;)
 
