@@ -33,6 +33,10 @@ There are quite some options for improvement, that I might address in this file.
 
 -- če delam s kroglami in iterativno večam, bi moral kontrolirat še, da ne preskoči krogla na drug girus (use clustering)
 
+- make a select box, to select the template you want
+
+-- then use afni/SUMA volume and surface templates https://afni.nimh.nih.gov/pub/dist/doc/program_help/suma.html
+
 
 initiated by Andrej Vovk ;)
 
